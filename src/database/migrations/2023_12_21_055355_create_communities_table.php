@@ -11,22 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('communities', function (Blueprint $table) {
             $table->id();
+            $table->integer('owner');
+            $table->string('name');
             $table->string('avatar')
                 ->nullable();
-            $table->string('username')
+            $table->string('description')
+                ->nullable();
+            $table->string('slug')
                 ->unique();
-            $table->string('status')
-                ->nullable();
-            $table->enum('account_visible', ['public', 'private'])
-                ->default('public');
-            $table->string('phone')
-                ->nullable();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
             $table->timestamps();
+            // FK Key
+            $table->foreign('owner')
+                ->references('id')
+                ->on('users');
         });
     }
 
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('communities');
     }
 };
